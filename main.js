@@ -1,9 +1,10 @@
-    // function init(){
+// function init(){
 
 // selecciono los elementos con los que voy a trabajar
 const input = document.querySelector("input");
 const addButton = document.querySelector(".btn-add");
 const ul = document.querySelector("ul");
+const empty = document.querySelector(".empty");
 // creo un evento click al boton añadir
 addButton.addEventListener('click', (event) => {
     // esta funcion nos sirve para que no se actualice cada vez que clikeemos
@@ -11,17 +12,43 @@ addButton.addEventListener('click', (event) => {
 
     // creo esta constante que almacenara el valor de input
     const textTask = input.value;
-        console.log(textTask)
 
-    // creamos los elemento p y li y los colocamos con appenchild en su lugar
-    const li = document.createElement("li");
-    const p = document.createElement("p");
-    p.textContent = textTask;
+        // creamos una condicion en el valor del input que si es vacio o con espacios vacios no se añada con trim conseguimos quitar espacios en blanco o añadir tareas valor de espacios en blanco
+        if(textTask !== "") {
 
-    li.appendChild(p);
-    ul.appendChild(li);
+        // creamos los elemento p y li y los colocamos con appenchild en su lugar
+        const li = document.createElement("li");
+        const p = document.createElement("p");
+        p.textContent = textTask;
+
+        li.appendChild(p);
+        li.appendChild(addDeleteButton());
+        ul.appendChild(li);
+        // para que no se quede el valor de input metido y haya que borrarlo, le decimos que lo deje con un string vacio
+        input.value = "";
+        // hemos metido una tarea así que tenemos que quitar el texto de que no hay tareas pendientes
+        // pillamos la classe que tiene asociado el div de ese elemento y le asociamos el style.display none para que no aparezca
+        empty.style.display = "none";
+    }
 });
 
+// ahora crearé el botton de borrar que acompaña a tex p, y esta functio que creaa el botón lo añado como hijo tambié de la ul
+function addDeleteButton() {
+    const deleteButton = document.createElement('button');
+
+    deleteButton.textContent = "X";
+    deleteButton.className = "button-delete";
+
+    deleteButton.addEventListener('click', (event) => {
+        // aqui me ha costado 
+        const task = event.target.parentElement;
+        ul.removeChild(task);
+    })
+    // hay que retornarlo para poder usar la función
+    return deleteButton;
+    
+
+};
 
 
 
